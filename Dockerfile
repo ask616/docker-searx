@@ -1,7 +1,5 @@
 FROM alpine:3.9
 
-ARG VERSION=0.15.0
-
 ENV BASE_URL=False IMAGE_PROXY=False \
     UID=991 GID=991
 
@@ -23,7 +21,9 @@ RUN apk -U upgrade \
     openssl \
     tini \
  && mkdir /usr/local/searx && cd /usr/local/searx \
- && wget -qO- https://github.com/asciimoo/searx/archive/v${VERSION}.tar.gz | tar xz --strip 1 \
+ && wget -q0- https://api.github.com/repos/asciimoo/searx/tarball | tar xz --strip=1
+
+
  && pip3 install --upgrade setuptools \
  && pip3 install --no-cache -r requirements.txt \
  && sed -i "s/127.0.0.1/0.0.0.0/g" searx/settings.yml \
@@ -36,6 +36,6 @@ RUN chmod +x /usr/local/bin/run.sh
 
 EXPOSE 8888
 
-LABEL maintainer="Wonderfall <wonderfall@targaryen.house>"
+LABEL maintainer="Areeb Khan <areebk@protonmail.com>"
 
 CMD ["run.sh"]
